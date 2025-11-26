@@ -2,8 +2,8 @@ import pyxel
 
 class Game:
     def __init__(self):
-        pyxel.init(240, 240)
-        pyxel.load("my_resource.pyxres")
+        pyxel.init(256, 128)
+        pyxel.load("../assets/my_resource.pyxres")
 
         self.x = 40
         self.y = 40
@@ -22,7 +22,7 @@ class Game:
 
     def draw(self):
         pyxel.cls(0)
-        pyxel.bltm(0, 0, 0, 0, 0, 240, 240)     # draw tilemap
-        pyxel.blt(self.x, self.y, 0, 0, 0, 8, 8, 0)  # draw player sprite
+        pyxel.bltm(0, 0, 0, 0, 0, 256, 128)     # draw tilemap
+        pyxel.blt(self.x, self.y, 0, 0, 0, 16, 16, 0)  # draw player sprite
 
 Game()
