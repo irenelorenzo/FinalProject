@@ -1,24 +1,27 @@
 import pyxel
 
-class Game:
+class Background:
     def __init__(self):
         pyxel.init(256, 128)
         pyxel.load("../assets/my_resource.pyxres")
 
-        self.x = 40
-        self.y = 40
+        self.y = 92
+
+
 
         pyxel.run(self.update, self.draw)
 
     def update(self):
-        if pyxel.btn(pyxel.KEY_LEFT):
-            self.x -= 1
-        if pyxel.btn(pyxel.KEY_RIGHT):
-            self.x += 1
-        if pyxel.btn(pyxel.KEY_UP):
-            self.y -= 1
-        if pyxel.btn(pyxel.KEY_DOWN):
-            self.y += 1
+        if self.side == "left"
+            if pyxel.btnp(pyxel.KEY_W) and self.y > self.max_y:
+                self.y -= 32
+            if pyxel.btnp(pyxel.KEY_S) and self.y < self.min_y:
+                self.y += 32
+        else:
+            if pyxel.btnp(pyxel.KEY_UP) and self.y > self.max_y:
+                self.y -= 32
+            if pyxel.btnp(pyxel.KEY_DOWN) and self.y < self.min_y:
+                self.y += 32
 
     def draw(self):
         pyxel.cls(0)
