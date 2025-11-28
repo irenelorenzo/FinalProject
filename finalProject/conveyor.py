@@ -1,1 +1,1 @@
-class Conveyor
+class Conveyor:

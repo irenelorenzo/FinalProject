@@ -14,9 +14,7 @@ class Player:
         of the screen and Luigi on the left. It will determine the x-coordinates of the characters.
         """
         self.side = side
-        # y: int. This is the vertical position of the characters. Each character will have three
-        # possible values for this parameter, with 0 being the ground floor for them. They will both start at 0
-        # Since on each side of the screen, the ground floor is on a different coordinate,
+
         if side == "right":
             self.x = 192    #The x coordinate of character on right side
             self.min_y = 120   #Lowest y coordinate of character on right side
@@ -39,21 +37,26 @@ class Player:
     def side(self):
         return self.__side
 
-    @property
-    def image(self):
-        return self.image
 
     # Now that all the properties of the attributes have been defined, it is time to create their setters.
     @y.setter
-    def vertical_pos(self,value):
+    def y(self,y):
+        if not isinstance(y, int):
+            raise TypeError("The y-coordinate must be an integer")
+        elif y < self.min_y or y > self.max_y:
+            raise ValueError("The y-coordinate must correspond to one of the floors in its respective side")
+        else:
+            self.__y = y
 
     @side.setter
-    def side(self,value):
-      self.__side=value
+    def side(self,side):
+        if not isinstance(side, str):
+            raise TypeError("The side the character is on must be a string")
+        elif side != "left" and side != "right":
+            raise ValueError("The side must be either 'right' or 'left'")
+        else:
+            self.__side = side
 
-    @image.setter
-    def image(self,value):
-      self.image=value
 
 
     # Now that all the properties and setters have been created, we need to create a method for the characters' vertical
@@ -74,4 +77,5 @@ class Player:
 
     def draw(self):
         # Display the character on the screen
-        pyxel.blt(self.x, self.vertical_pos, 0, 0, 0, 16, 16, 0)
+        pyxel.blt(self.x, self.y, 0, 0, 0, 16, 16, 0)
+
