@@ -17,12 +17,20 @@ class Player:
 
         if side == "right":
             self.x = 192    #The x coordinate of character on right side
-            self.min_y = 120   #Lowest y coordinate of character on right side
+            self.min_y = 108   #Lowest y coordinate of character on right side
             self.max_y = 56     # Highest y coordinate of character on right side
+            # Create tuples with the x and y coordinates in the imagebank
+            self.x_image = 16
+
         else:
             self.x = 60  # The x coordinate of character on right side
             self.min_y = 92  # Lowest y coordinate of character on right side
             self.max_y = 40  # Highest y coordinate of character on right side
+            self.x_image = 0
+
+        # Create dictionary to store coordinates of image
+        self.y_images = {"normal": 0}
+        self.y_image = self.y_images["normal"]
 
         self.y = self.min_y     # Initialises the position of the character on its ground floor
 
@@ -43,8 +51,7 @@ class Player:
     def y(self,y):
         if not isinstance(y, int):
             raise TypeError("The y-coordinate must be an integer")
-        elif y < self.min_y or y > self.max_y:
-            raise ValueError("The y-coordinate must correspond to one of the floors in its respective side")
+        # no condition established for the bounds of the value of y, since they are established in the init function
         else:
             self.__y = y
 
@@ -61,7 +68,7 @@ class Player:
 
     # Now that all the properties and setters have been created, we need to create a method for the characters' vertical
     # movement
-    def vertical_movement(self):
+    def move(self):
         """ This method moves the characters up and down floors, with different controls depending on the side of the
          screen they are on"""
         if self.side == "left":
@@ -77,5 +84,6 @@ class Player:
 
     def draw(self):
         # Display the character on the screen
-        pyxel.blt(self.x, self.y, 0, 0, 0, 16, 16, 0)
+        pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 16, 0)
+        # The last number in the function above means that the background will be transparent
 
