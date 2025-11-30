@@ -11,7 +11,8 @@ class Player:
     def __init__(self, side: str):
         """This is the __init__ function for the players
         :param side: str. A string representing the side each of the characters is in. Mario will be on the right side
-        of the screen and Luigi on the left. It will determine the x-coordinates of the characters.
+        of the screen and Luigi on the left. It will determine the x-coordinates of the characters, as well as the
+        sprite used for them
         """
         self.side = side
 
