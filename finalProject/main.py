@@ -1,5 +1,6 @@
 import pyxel
 from player import Player
+from truck import Truck
 
 pyxel.init(256, 128)
 pyxel.load("../assets/my_resource.pyxres")
@@ -9,6 +10,8 @@ pyxel.bltm(0, 0, 0, 0, 0, 256, 128)
 
 mario = Player("right")
 luigi = Player("left")
+truck = Truck()
+
 
 def update():
     # Use this function to alter mario and luigi's position (add conditions for when 8 packages at truck, etc.)
@@ -20,5 +23,6 @@ def draw():
     pyxel.bltm(0, 0, 0, 0, 0, 256, 128) # Redraw the tilemap
     mario.draw() # Draw Mario at its new position
     luigi.draw() # Draw Luigi at its new position
+    truck.draw()
 
 pyxel.run(update, draw) #run the program
