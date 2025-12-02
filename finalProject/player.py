@@ -2,6 +2,7 @@ import pyxel
 
 # Reminders:
 # Create a dictionary at some point with the location of Mario and Luigi's images --> use this to correct image attribute
+# Make it so that the sprites change whenever the package is being moved from one place to another
 
 class Player:
     """This is a class to represent the characters. In the final game, there will be two characters, Mario and Luigi
@@ -66,7 +67,6 @@ class Player:
             self.__side = side
 
 
-
     # Now that all the properties and setters have been created, we need to create a method for the characters' vertical
     # movement
     def move(self):
@@ -75,16 +75,19 @@ class Player:
         if self.side == "left":
             if pyxel.btnp(pyxel.KEY_W) and self.y > self.max_y:
                 self.y -= 32
-            if pyxel.btnp(pyxel.KEY_S) and self.y < self.min_y:
+            elif pyxel.btnp(pyxel.KEY_S) and self.y < self.min_y:
                 self.y += 32
         else:
             if pyxel.btnp(pyxel.KEY_UP) and self.y > self.max_y:
                 self.y -= 32
-            if pyxel.btnp(pyxel.KEY_DOWN) and self.y < self.min_y:
+            elif pyxel.btnp(pyxel.KEY_DOWN) and self.y < self.min_y:
                 self.y += 32
 
     def draw(self):
         # Display the character on the screen
-        pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 16, 0)
+        if self.side == "right" and self.y == self.min_y:
+            pyxel.blt(self.x, self.y, 0, self.x_image - 1, self.y_image, -16, 16, 0)
+        else:
+            pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 16, 0)
         # The last number in the function above means that the background will be transparent
 
