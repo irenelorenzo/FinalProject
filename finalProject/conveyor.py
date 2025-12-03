@@ -30,3 +30,5 @@ class Conveyor:
 
     def __eq__(self, other) -> bool:
         return self.limit == other
+
+    # define method to slowly delete package image

@@ -34,6 +34,8 @@ class Truck:
             for _ in range(48): # Bring truck back into screen
                 self.x += 1
 
+    # Def __eq__ method to check if package is at truck (compare package at truck with True)
+
 
     def draw(self):
         """This method will display the truck on the screen"""

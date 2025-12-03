@@ -12,23 +12,11 @@ import pyxel
 # Make packages appear at truck when the final position of the final floor is reached
 
 class Package:
-    def __init__(self, conveyor: int):
+    def __init__(self, conveyor: int, side: str, init_x: int):
         self.x = 248
+        self.side = side
         self.at_truck = False
         self.conveyor = conveyor
-        self.moving = False
-        self.pixels_left = 0
-        self.move_delay = 0  # counts frames
-        self.move_speed = 3  # move once every 3 frames (slower)
-        if  self.conveyor == 0 or (self.conveyor//2) != 0:
-            self.direction = "left"
-            if self.conveyor == 0:
-                self.y = 98
-            else:
-                self.y = 98 + (self.conveyor - 1) * 16
-        else:
-            self.direction = "right"
-            self.y = 98 + (self.conveyor - 1) * 16
 
         self.x_image = 32 # Add x coordinates of package sprites
         self.y_image = 8 # Add y coordinates of package sprites (later on, add a 16 to this attribute when middle of belt is reached)
@@ -112,11 +100,12 @@ class Package:
         """Return True if package reached the truck (top belt)."""
         return self.conveyor == max_level
 
+    # Define a function for when package changes image (if side changes, add 16 to sprite coordinates)
+
     def update(self):
         self.move_several()
 
 
     def draw(self):
-        # Display the character on the screen
+        # Display the package on the screen
         pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 8, 0)
-        # The last number in the function above means that the background will be transparent
