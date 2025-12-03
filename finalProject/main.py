@@ -1,4 +1,6 @@
 # Make sure all classes have only the necessary setters (not for read-only attributes)
+# Make sure anything within a method that can be replaced by a protected method is replaced by a protected method (e.g.
+# if there's too many if statements)
 import pyxel
 from player import Player
 from truck import Truck
