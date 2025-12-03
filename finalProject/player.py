@@ -1,7 +1,5 @@
 import pyxel
-
 # Reminders:
-# Create a dictionary at some point with the location of Mario and Luigi's images --> use this to correct image attribute
 # Make it so that the sprites change whenever the package is being moved from one place to another
 
 class Player:
@@ -21,7 +19,6 @@ class Player:
             self.x = 192    #The x coordinate of character on right side
             self.min_y = 108   #Lowest y coordinate of character on right side
             self.max_y = 56     # Highest y coordinate of character on right side
-            # Create tuples with the x and y coordinates in the imagebank
             self.x_image = 16
 
         else:
@@ -31,7 +28,7 @@ class Player:
             self.x_image = 0
 
         # Create dictionary to store coordinates of image
-        self.y_images = {"normal": 0}
+        self.y_images = {"normal": 0, "grab1": 16, "grab2": 32, "lift": 48, "boss": 64, "rest1": 80, "rest2": 96}
         self.y_image = self.y_images["normal"]
 
         self.y = self.min_y     # Initialises the position of the character on its ground floor
