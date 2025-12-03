@@ -89,17 +89,11 @@ class Package:
         """Return True if package reached the truck (top belt)."""
         return self.conveyor == max_level
 
+    def update(self):
+        self.move_several()
+
+
     def draw(self):
         # Display the character on the screen
         pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 8, 0)
         # The last number in the function above means that the background will be transparent
-
-
-
-
-
-
-
-
-
-

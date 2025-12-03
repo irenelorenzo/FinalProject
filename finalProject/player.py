@@ -83,6 +83,10 @@ class Player:
             elif pyxel.btnp(pyxel.KEY_DOWN) and self.y < self.min_y:
                 self.y += 32
 
+    def update(self):
+        self.move()
+
+
     def draw(self):
         # Display the character on the screen
         if self.side == "right" and self.y == self.min_y:

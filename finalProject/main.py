@@ -1,3 +1,4 @@
+# Make sure all classes have only the necessary setters (not for read-only attributes)
 import pyxel
 from player import Player
 from truck import Truck
@@ -16,9 +17,9 @@ package = Package(0) # Create a list of packages to move through it and change t
 
 def update():
     # Use this function to alter mario and luigi's position (add conditions for when 8 packages at truck, etc.)
-    mario.move()
-    luigi.move()
-    package.move_several()
+    mario.update()
+    luigi.update()
+    package.update()
 
 def draw():
     pyxel.cls(0) # Clear the screen
