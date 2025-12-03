@@ -14,6 +14,10 @@ class Package:
         self.x = 248
         self.at_truck = False
         self.conveyor = conveyor
+        self.moving = False
+        self.pixels_left = 0
+        self.move_delay = 0  # counts frames
+        self.move_speed = 3  # move once every 3 frames (slower)
         if  self.conveyor == 0 or (self.conveyor//2) != 0:
             self.direction = "left"
             if self.conveyor == 0:
@@ -73,12 +77,29 @@ class Package:
             self.x += 1
 
     def move_several(self):
-        if pyxel.btnp(pyxel.KEY_P): # Right now, the package moves when the letter p is pressed, to check the functionality
-            for pixel in range (24):
-                self.move_one()
-            if self.conveyor != 0:
-                for pixel in range(72):
-                    self.move_one()
+        if pyxel.btn(pyxel.KEY_P): # Right now, the package moves when the letter p is pressed, to check the functionality
+            #for pixel in range (24):
+            self.move_one()
+            #if self.conveyor != 0:
+                #for pixel in range(72):
+                 #   self.move_one()
+            self.moving = True
+
+# Edit so it fits program best!!! Only works when p is pressed, we have to get it to move automatically
+    def update_movement(self):
+        if self.moving:
+            # Increase delay counter
+            self.move_delay += 1
+
+            # Move only when enough frames have passed
+            if self.move_delay >= self.move_speed:
+                self.move_one()  # move 1 pixel
+                self.pixels_left -= 1
+                self.move_delay = 0  # reset counter
+
+            # Stop when finished
+            if self.pixels_left <= 0:
+                self.moving = False
 
     def move_up(self):
             """Move to the next belt"""
