@@ -1,6 +1,8 @@
 import pyxel
 
 # Reminders
+# Define package movement in conveyor
+# Change image depending on side
 # Change package movement so that it moves automatically, and not when key is pressed
 # Develop functions for when package moves to another conveyor (change sprites to tilted package, visibly move package)
 # Develop function for when package moves

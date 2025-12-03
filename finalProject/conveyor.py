@@ -1,3 +1,4 @@
+# Alter speed of packages in conveyor
 class Conveyor:
     """This class is used to represent the conveyor belts"""
     def __init__(self, belt: str, y: int):
@@ -28,4 +29,4 @@ class Conveyor:
             self.__belt = value
 
     def __eq__(self, other) -> bool:
-        return (self.limit == other)
+        return self.limit == other
