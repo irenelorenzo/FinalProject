@@ -7,14 +7,14 @@ class Player:
     They will be able to move up and down, rest, transfer packages from one belt to the next/to the truck, and get told
     off by their boss for dropping a package"""
     # First, we will define the __init__ method to initialise the attributes needed for the characters
-    def __init__(self, side: str):
+    def __init__(self, side: str, level: int = 0):
         """This is the __init__ function for the players
         :param side: str. A string representing the side each of the characters is in. Mario will be on the right side
         of the screen and Luigi on the left. It will determine the x-coordinates of the characters, as well as the
         sprite used for them
         """
         self.side = side
-
+        self.level = level
         if side == "right":
             self.x = 192    #The x coordinate of character on right side
             self.min_y = 108   #Lowest y coordinate of character on right side

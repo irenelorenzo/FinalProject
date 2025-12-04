@@ -19,7 +19,7 @@ pyxel.bltm(0, 0, 0, 0, 0, 256, 128)
 mario = Player("right")
 luigi = Player("left")
 truck = Truck()
-package = Package(0, "right")
+package = Package(0, 0)
 conveyor = Conveyor("0", 98)
 
 def update():
@@ -28,7 +28,7 @@ def update():
     luigi.update()
     conveyor.move_several()
     conveyor.update_movement()
-    package.update(conveyor.x)
+    package.update(conveyor.x, conveyor.limit, "left")
 
 def draw():
     pyxel.cls(0) # Clear the screen

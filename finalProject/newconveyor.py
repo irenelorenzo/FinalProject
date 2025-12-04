@@ -1,19 +1,20 @@
 import pyxel
 class Conveyor:
     """This class is used to represent the conveyor belts"""
-    def __init__(self, belt: str, y: int = 98):
+    def __init__(self, belt: str, y: int = 98, limit: int = 72):
         self.belt = belt #This attribute discerns between even, odd and 0 conveyor belts
         self.y = y  # y-coordinate just above the conveyor belt (where package will be)
         self.direction = "left"
+        self.limit = limit
         # The type of the conveyor belt will define its 'limit', the x-coordinate where the package has to be picked up
         # by either one of the characters
-        if self.belt == "even":
-            self.limit = 176
-            self.direction = "right"
-        elif self.belt == "odd":
-            self.limit = 72
-        else:
-            self.limit = 224
+        #if self.belt == "even":
+         #   self.limit = 176
+          #  self.direction = "right"
+        #elif self.belt == "odd":
+         #   self.limit = 72
+        #else:
+          #  self.limit = 224
 
         self.x = 248
         self.moving = False
