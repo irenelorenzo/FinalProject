@@ -17,6 +17,7 @@ class Package:
         self.continuity = continuity # This attribute describes if the package has not been killed prior to getting to
                                      # its current conveyor. It is set as False at the beginning
         self.limit_reached = False
+        self.failures = 0
 
 
     @property
@@ -73,6 +74,7 @@ class Package:
             self.collision = True
         elif x < limit:
             self.fallen = True
+            self.failures += 1
 
     def package_falling(self, x, limit):
         """This method will change the sprite of the package once it reaches the limit of the conveyor"""
@@ -93,14 +95,14 @@ class Package:
             self.continuity = False
             self.y_image = 0
 
-    def continuity_checker(self, previous_continuity: bool = True):
-        if previous_continuity:
-            self.continuity == True
+    def continuity_checker(self, previous_collision: bool):
+        if previous_collision:
+            self.continuity = True
 
-    def update(self, x, limit, player_level, previous_continuity: bool = True):
+    def update(self, x, limit, player_level, previous_collision: bool):
         # set a function that sets previous packages' continuity to current
-        self.continuity_checker(previous_continuity)
-        if self.continuity:
+        self.continuity_checker(previous_collision)
+        if self.continuity or self.conveyor == 0:
             self.switch_image(x)
             self.hide_package(x)
             self.package_falling(x, limit)

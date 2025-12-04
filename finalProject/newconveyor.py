@@ -9,13 +9,15 @@ class Conveyor:
         # by either one of the characters
         if self.belt == "even":
             self.limit = 176
+            self.x = 80
             self.direction = "right"
         elif self.belt == "odd":
             self.limit = 72
+            self.x = 168
         else:
             self.limit = 208
+            self.x = 248
 
-        self.x = 248
         self.moving = False
         self.pixels_left = 0
         self.move_delay = 0  # counts frames
@@ -82,6 +84,7 @@ class Conveyor:
             if self.pixels_left <= 0:
                 self.moving = False
 
-    def update(self):
-        self.move_several()
-        self.update_movement()
+    def update(self, previous_collision: bool = True):
+        if previous_collision:
+            self.move_several()
+            self.update_movement()
