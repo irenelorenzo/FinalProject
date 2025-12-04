@@ -7,7 +7,7 @@ class Package:
         self.conveyor = conveyor
 
         self.x_image = 32  # Add x coordinates of package sprites
-        self.y_image = 16  # Add y coordinates of package sprites (later on, add a 16 to this attribute when middle of belt is reached)
+        self.y_image = 24  # Add y coordinates of package sprites (later on, add a 16 to this attribute when middle of belt is reached)
 
 
     @property
@@ -36,6 +36,8 @@ class Package:
 
     def switch_image(self, x):
         """Switches sprite to the next when middle of screen is reached, where x is substituted in main code"""
+        # Make it so that package disappears as it reaches center
+
         if x == 120:
             self.y_image += 16
 
@@ -44,6 +46,6 @@ class Package:
         self.switch_image(x)
 
 
-    def draw(self):
+    def draw(self, x, y):
         # Display the package on the screen
-        pyxel.blt(248, 98, 0, self.x_image, self.y_image, 16, 8, 0)
+        pyxel.blt(x, y, 0, self.x_image, self.y_image, 16, 8, 0)

@@ -26,9 +26,9 @@ def update():
     # Use this function to alter mario and luigi's position (add conditions for when 8 packages at truck, etc.)
     mario.update()
     luigi.update()
-    package.switch_image(conveyor.x)
     conveyor.move_several()
     conveyor.update_movement()
+    package.update(conveyor.x)
 
 def draw():
     pyxel.cls(0) # Clear the screen
@@ -36,7 +36,7 @@ def draw():
     mario.draw() # Draw Mario at its new position
     luigi.draw() # Draw Luigi at its new position
     truck.draw() # Draw the truck
-    package.draw()
+    package.draw(conveyor.x, conveyor.y)
 
 
 
