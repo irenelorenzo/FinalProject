@@ -3,12 +3,9 @@ import pyxel
 # Create method to check for collisions
 # Create method to make it fall
 class Package:
-    def __init__(self, conveyor: int, level: int, continuity: bool = True, side: str = "left"):
-
-        self.side = side # The side will be a number, with 0 and odd numbers being the right and even numbers being the
-                         # left. This makes it easier to change the image depending on the side the package is on.
+    def __init__(self, conveyor: int, level: int, continuity: bool = False):
         self.at_truck = False
-        self.conveyor = conveyor
+        self.conveyor = conveyor # 0 for conveyor0, 1 for odd conveyors, 2 for even conveyors
         self.level = level
 
         self.x_image = 51  # Add x coordinates of package sprites
@@ -16,8 +13,10 @@ class Package:
         self.width = 10
         self.height = 8
         self.collision = False
+        self.fallen = False
         self.continuity = continuity # This attribute describes if the package has not been killed prior to getting to
-                                     # its current conveyor
+                                     # its current conveyor. It is set as False at the beginning
+        self.limit_reached = False
 
 
     @property
@@ -68,34 +67,48 @@ class Package:
         checking potential collisions between them"""
         return self.level == player_level
 
-    #def collision_check(self, x, limit, player_level):
+    def collision_check(self, x, limit, player_level):
         """This method will be used to compare the x-coordinate of the package with the limit of its conveyor"""
-        if x > limit and self.level == player_level:
+        if x < limit and self.level == player_level:
             self.collision = True
-        else:
-            self.collision = False
+        elif x < limit:
+            self.fallen = True
 
     def package_falling(self, x, limit):
         """This method will change the sprite of the package once it reaches the limit of the conveyor"""
-        if self.side == "left" and x == limit:
-            self.x_image += 48
-        else:
+        if x == limit and self.conveyor == 2:
             self.x_image += 32
+        elif x == limit:
+            self.x_image += 48
             # Package reaches next level
         # Package disappears
 
     def package_end(self):
         """This method will either make the package fall or get it to the next conveyor. However, it will be the end of
         the package in that conveyor for now"""
+        if self.collision:
+            self.continuity = True
+            self.y_image = 0
+        elif self.fallen:
+            self.continuity = False
+            self.y_image = 0
 
+    def continuity_checker(self, previous_continuity: bool = True):
+        if previous_continuity:
+            self.continuity == True
 
-    def update(self, x, limit, player_level):
-        #self.collision_check(x, limit, player_level)
-        #self.package_falling(x, limit)
-        self.switch_image(x)
-        self.hide_package(x)
+    def update(self, x, limit, player_level, previous_continuity: bool = True):
+        # set a function that sets previous packages' continuity to current
+        self.continuity_checker(previous_continuity)
+        if self.continuity:
+            self.switch_image(x)
+            self.hide_package(x)
+            self.package_falling(x, limit)
+            self.collision_check(x, limit, player_level)
+            self.package_end()
 
 
     def draw(self, x, y):
         # Display the package on the screen
-        pyxel.blt(x, y, 1, self.x_image, self.y_image, self.width, self.height, 0)
+        if self.continuity:
+            pyxel.blt(x, y, 1, self.x_image, self.y_image, self.width, self.height, 0)

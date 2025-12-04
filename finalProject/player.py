@@ -72,13 +72,17 @@ class Player:
         if self.side == "left":
             if pyxel.btnp(pyxel.KEY_W) and self.y > self.max_y:
                 self.y -= 32
+                self.level += 1
             elif pyxel.btnp(pyxel.KEY_S) and self.y < self.min_y:
                 self.y += 32
+                self.level -= 1
         else:
             if pyxel.btnp(pyxel.KEY_UP) and self.y > self.max_y:
                 self.y -= 32
+                self.level += 1
             elif pyxel.btnp(pyxel.KEY_DOWN) and self.y < self.min_y:
                 self.y += 32
+                self.level -= 1
 
     def update(self):
         self.move()

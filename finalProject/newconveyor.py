@@ -1,20 +1,19 @@
 import pyxel
 class Conveyor:
     """This class is used to represent the conveyor belts"""
-    def __init__(self, belt: str, y: int = 98, limit: int = 72):
+    def __init__(self, belt: str, y: int = 98):
         self.belt = belt #This attribute discerns between even, odd and 0 conveyor belts
         self.y = y  # y-coordinate just above the conveyor belt (where package will be)
         self.direction = "left"
-        self.limit = limit
         # The type of the conveyor belt will define its 'limit', the x-coordinate where the package has to be picked up
         # by either one of the characters
-        #if self.belt == "even":
-         #   self.limit = 176
-          #  self.direction = "right"
-        #elif self.belt == "odd":
-         #   self.limit = 72
-        #else:
-          #  self.limit = 224
+        if self.belt == "even":
+            self.limit = 176
+            self.direction = "right"
+        elif self.belt == "odd":
+            self.limit = 72
+        else:
+            self.limit = 208
 
         self.x = 248
         self.moving = False
@@ -64,13 +63,8 @@ class Conveyor:
             self.x += 1
 
     def move_several(self):
-        if pyxel.btn(pyxel.KEY_P):  # Right now, the package moves when the letter p is pressed, to check the functionality
-            # for pixel in range (24):
-            self.move_one()
-            # if self.conveyor != 0:
-            # for pixel in range(72):
-            #   self.move_one()
-            self.moving = True
+        self.move_one()
+        self.moving = True
 
     # Edit so it fits program best!!! Only works when p is pressed, we have to get it to move automatically
     def update_movement(self):
@@ -90,3 +84,4 @@ class Conveyor:
 
     def update(self):
         self.move_several()
+        self.update_movement()
