@@ -1,7 +1,6 @@
 import pyxel
 # Reminders:
-# Create method to check for collisions
-# Create method to make it fall
+# If we have time, make it so that the packages disappear gradually at the middle, and make them spend more time falling
 class Package:
     def __init__(self, conveyor: int, level: int, continuity: bool = False):
         self.at_truck = False

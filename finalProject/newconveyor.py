@@ -1,4 +1,6 @@
 import pyxel
+# Reminders:
+# Slow speed down a little
 class Conveyor:
     """This class is used to represent the conveyor belts"""
     def __init__(self, belt: str, y: int = 98):
