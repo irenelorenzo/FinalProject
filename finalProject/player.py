@@ -1,7 +1,6 @@
 import pyxel
-
 # Reminders:
-# Create a dictionary at some point with the location of Mario and Luigi's images --> use this to correct image attribute
+# Make it so that the sprites change whenever the package is being moved from one place to another
 
 class Player:
     """This is a class to represent the characters. In the final game, there will be two characters, Mario and Luigi
@@ -15,12 +14,11 @@ class Player:
         sprite used for them
         """
         self.side = side
-
+        self.level = 0
         if side == "right":
             self.x = 192    #The x coordinate of character on right side
             self.min_y = 108   #Lowest y coordinate of character on right side
             self.max_y = 56     # Highest y coordinate of character on right side
-            # Create tuples with the x and y coordinates in the imagebank
             self.x_image = 16
 
         else:
@@ -30,7 +28,7 @@ class Player:
             self.x_image = 0
 
         # Create dictionary to store coordinates of image
-        self.y_images = {"normal": 0}
+        self.y_images = {"normal": 0, "grab1": 16, "grab2": 32, "lift": 48, "boss": 64, "rest1": 80, "rest2": 96}
         self.y_image = self.y_images["normal"]
 
         self.y = self.min_y     # Initialises the position of the character on its ground floor
@@ -66,7 +64,6 @@ class Player:
             self.__side = side
 
 
-
     # Now that all the properties and setters have been created, we need to create a method for the characters' vertical
     # movement
     def move(self):
@@ -75,16 +72,26 @@ class Player:
         if self.side == "left":
             if pyxel.btnp(pyxel.KEY_W) and self.y > self.max_y:
                 self.y -= 32
-            if pyxel.btnp(pyxel.KEY_S) and self.y < self.min_y:
+                self.level += 1
+            elif pyxel.btnp(pyxel.KEY_S) and self.y < self.min_y:
                 self.y += 32
+                self.level -= 1
         else:
             if pyxel.btnp(pyxel.KEY_UP) and self.y > self.max_y:
                 self.y -= 32
-            if pyxel.btnp(pyxel.KEY_DOWN) and self.y < self.min_y:
+                self.level += 1
+            elif pyxel.btnp(pyxel.KEY_DOWN) and self.y < self.min_y:
                 self.y += 32
+                self.level -= 1
+
+    def update(self):
+        self.move()
+
 
     def draw(self):
         # Display the character on the screen
-        pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 16, 0)
+        if self.side == "right" and self.y == self.min_y:
+            pyxel.blt(self.x, self.y, 0, self.x_image - 1, self.y_image, -16, 16, 0)
+        else:
+            pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 16, 0)
         # The last number in the function above means that the background will be transparent
-

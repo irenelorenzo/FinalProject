@@ -1,4 +1,7 @@
 import pyxel
+# Reminders:
+# Get the truck to count the packages that reach it
+# When this count == 8, initiate delivery and rest. Also add ten points to score
 class Truck:
     """This is a class to represent the truck. In the game, there will only be one truck. When there are 8 packages in
     the truck, it will move out of frame and become the initial picture again """
@@ -34,7 +37,9 @@ class Truck:
             for _ in range(48): # Bring truck back into screen
                 self.x += 1
 
+    # Def __eq__ method to check if package is at truck (compare package at truck with True)
+
 
     def draw(self):
         """This method will display the truck on the screen"""
-        pyxel.blt(self.x, self.y, 1, 0, self.image, 64, 40, 0)
+        pyxel.blt(self.x, self.y, 1, 0, self.image, 50, 34, 0)
