@@ -3,6 +3,8 @@
 # if there's too many if statements)
 # Make sure all methods have docstrings
 # Make sure code is properly commented
+# Put conveyors into lists and simplify main code
+# Change newconveyor to conveyor, same with newpackage
 
 # Import all the classes, and pyxel
 import pyxel
@@ -27,6 +29,7 @@ package2 = Package(2, 1)
 package3 = Package(1, 1)
 package4 = Package(2, 2)
 package5 = Package(1, 2)
+# Put conveyors in odd and even list to simplify everything
 conveyor = Conveyor("0", 98)
 conveyor1 = Conveyor("odd", 98)
 conveyor2 = Conveyor("even", 82)
@@ -39,7 +42,9 @@ def update():
     mario.update()
     luigi.update()
     conveyor.update()
+
     package.update(conveyor.x, conveyor.limit, mario.level, True)
+    # Use for loops to update conveyors to simplify everything
     conveyor1.update(package.collision)
     package1.update(conveyor1.x, conveyor1.limit, luigi.level, package.collision)
     conveyor2.update(package1.collision)
@@ -50,6 +55,7 @@ def update():
     package4.update(conveyor4.x, conveyor4.limit, mario.level, package3.collision)
     conveyor5.update(package4.collision)
     package5.update(conveyor5.x, conveyor5.limit, luigi.level, package4.collision)
+    truck.update(package5.collision)
     # update score depending on if the conveyor belts are active
 
 def draw():
