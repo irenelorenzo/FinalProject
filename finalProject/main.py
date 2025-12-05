@@ -1,6 +1,8 @@
 # Make sure all classes have only the necessary setters (not for read-only attributes)
 # Make sure anything within a method that can be replaced by a protected method is replaced by a protected method (e.g.
 # if there's too many if statements)
+# Make sure all methods have docstrings
+# Make sure code is properly commented
 
 # Import all the classes, and pyxel
 import pyxel
@@ -48,6 +50,7 @@ def update():
     package4.update(conveyor4.x, conveyor4.limit, mario.level, package3.collision)
     conveyor5.update(package4.collision)
     package5.update(conveyor5.x, conveyor5.limit, luigi.level, package4.collision)
+    # update score depending on if the conveyor belts are active
 
 def draw():
     pyxel.cls(0) # Clear the screen

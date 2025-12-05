@@ -67,13 +67,14 @@ class Conveyor:
         elif self.direction == "right":
             self.x += 1
 
-    def move_several(self):
-        self.move_one()
-        self.moving = True
+    def move_several(self, previous_collision):
+        if previous_collision:
+            self.move_one()
+            self.moving = True
 
     # Edit so it fits program best!!! Only works when p is pressed, we have to get it to move automatically
-    def update_movement(self):
-        if self.moving:
+    def update_movement(self, previous_collision):
+        if self.moving and previous_collision:
             # Increase delay counter
             self.move_delay += 1
 
@@ -88,6 +89,5 @@ class Conveyor:
                 self.moving = False
 
     def update(self, previous_collision: bool = True):
-        if previous_collision:
-            self.move_several()
-            self.update_movement()
+        self.move_several(previous_collision)
+        self.update_movement(previous_collision)
