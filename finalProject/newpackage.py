@@ -1,6 +1,7 @@
 import pyxel
 # Reminders:
 # If we have time, make it so that the packages disappear gradually at the middle, and make them spend more time falling
+# Change sprites according to conveyor level
 class Package:
     def __init__(self, conveyor: int, level: int, continuity: bool = False):
         self.at_truck = False
