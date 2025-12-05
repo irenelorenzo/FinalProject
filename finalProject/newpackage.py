@@ -18,6 +18,7 @@ class Package:
                                      # its current conveyor. It is set as False at the beginning
         self.limit_reached = False
         self.failures = 0
+        self.visible = True
 
 
     @property
@@ -55,13 +56,10 @@ class Package:
         # You got the coordinates wrong! 128 is center, 136 right, 120 left. Update accordingly
         # Also, change sprites in image bank so that we don't need to modify width (this changed the x coordinate and
         # messed everything up, it's better if we just make it so there's a transparent sprite instead
-        if x == 111:
-            for _ in range(10):
-                self.x_image -= 1
-
-        elif x == 136:
-            for _ in range(10):
-                self.x_image += 1
+        if 111 <= x <= 136:
+                self.visible = False
+        else:
+                self.visible = True
 
     def __eq__(self, player_level):
         """This method will be used to compare the levels that the character is in and the level the package is in,
@@ -70,11 +68,19 @@ class Package:
 
     def collision_check(self, x, limit, player_level):
         """This method will be used to compare the x-coordinate of the package with the limit of its conveyor"""
-        if x < limit and self.level == player_level:
-            self.collision = True
-        elif x < limit:
-            self.fallen = True
-            self.failures += 1
+        if self.conveyor == 0 or self.conveyor == 1:
+            if x < limit and self.level == player_level:
+                self.collision = True
+            elif x < limit:
+                self.fallen = True
+                self.failures += 1
+        else:
+            if x > limit and self.level == player_level:
+                self.collision = True
+            elif x > limit:
+                self.fallen = True
+                self.failures += 1
+
 
     def package_falling(self, x, limit):
         """This method will change the sprite of the package once it reaches the limit of the conveyor"""
@@ -112,5 +118,5 @@ class Package:
 
     def draw(self, x, y):
         # Display the package on the screen
-        if self.continuity:
+        if self.continuity and self.visible:
             pyxel.blt(x, y, 1, self.x_image, self.y_image, self.width, self.height, 0)

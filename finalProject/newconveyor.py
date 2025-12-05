@@ -4,7 +4,6 @@ class Conveyor:
     def __init__(self, belt: str, y: int = 98):
         self.belt = belt #This attribute discerns between even, odd and 0 conveyor belts
         self.y = y  # y-coordinate just above the conveyor belt (where package will be)
-        self.direction = "left"
         # The type of the conveyor belt will define its 'limit', the x-coordinate where the package has to be picked up
         # by either one of the characters
         if self.belt == "even":
@@ -14,9 +13,11 @@ class Conveyor:
         elif self.belt == "odd":
             self.limit = 72
             self.x = 168
+            self.direction = "left"
         else:
             self.limit = 208
             self.x = 248
+            self.direction = "left"
 
         self.moving = False
         self.pixels_left = 0
