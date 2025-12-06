@@ -35,8 +35,8 @@ class Truck:
             self.package_added = True
 
     def delivery(self):
-        self.delivering = True
         if self.package_count == 8:
+            self.delivering = True
             for _ in range(48): # When the truck has eight packages, move truck out of screen 1 pixel at a time
                 self.x -= 1
             self.package_count = 0
