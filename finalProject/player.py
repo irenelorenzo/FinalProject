@@ -96,3 +96,4 @@ class Player:
             pyxel.blt(self.x, self.y, 0, self.x_image, self.y_image, 16, 16, 0)
         # The last number in the function above means that the background will be transparent
 
+

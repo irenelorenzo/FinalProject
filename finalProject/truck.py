@@ -53,3 +53,4 @@ class Truck:
     def draw(self):
         """This method will display the truck on the screen"""
         pyxel.blt(self.x, self.y, 1, 0, self.image, 50, 34, 0)
+
