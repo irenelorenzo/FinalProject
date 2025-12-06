@@ -4,14 +4,11 @@ import pyxel
 # Change sprites according to conveyor level
 class Package:
     def __init__(self, conveyor: int, level: int, continuity: bool = False):
-        self.at_truck = False
         self.conveyor = conveyor # 0 for conveyor0, 1 for odd conveyors, 2 for even conveyors
         self.level = level # Either 0, 1 or 2 - will be used to determine collisions with characters
 
         self.x_image = 51  # Add x coordinates of package sprites
         self.y_image = 24  # Add y coordinates of package sprites (later on, add a 16 to this attribute when middle of belt is reached)
-        self.width = 10
-        self.height = 8
         self.collision = False # Will become true once package collides with characters
         self.fallen = False # Will become false if package falls
         self.continuity = continuity # This attribute describes if the package has not been killed prior to getting to
@@ -19,23 +16,11 @@ class Package:
         self.limit_reached = False # This will change to true when package reaches conveyor limit
         self.failures = 0 # Counts if package has fallen to determine lives left
         self.visible = True # Used in the draw() function. Will be set to False when hiding the package
-        self.reset = False
-
-
-    @property
-    def at_truck(self)->bool:
-        return self.__at_truck
+        self.has_reset = False
 
     @property
     def conveyor(self) -> int:
         return self.__conveyor
-
-    @at_truck.setter
-    def at_truck(self, at_truck:bool):
-        if not isinstance(at_truck, bool):
-            raise TypeError("'at_truck' must be a boolean")
-        else:
-            self.__at_truck = at_truck
 
     @conveyor.setter
     def conveyor(self, conveyor: int):
@@ -66,18 +51,19 @@ class Package:
 
     def collision_check(self, x, limit, player_level):
         """This method will be used to compare the x-coordinate of the package with the limit of its conveyor"""
-        if self.conveyor == 0 or self.conveyor == 1: # For conveyor0 and odd conveyors
-            if x < limit and self.level == player_level: # Checks if package has passed limit and is on same level as player
-                self.collision = True # Determines package and player have collided (passes package onto next level)
-            elif x < limit:
-                self.fallen = True # If package has passed limit and is not on same level as player
-                self.failures += 1 # Add one to failure counter
-        else: # For even conveyors
-            if x > limit and self.level == player_level:
-                self.collision = True
-            elif x > limit:
-                self.fallen = True
-                self.failures += 1
+        if not self.collision and not self.fallen:
+            if self.conveyor == 0 or self.conveyor == 1: # For conveyor0 and odd conveyors
+                if x < limit and self.level == player_level: # Checks if package has passed limit and is on same level as player
+                    self.collision = True # Determines package and player have collided (passes package onto next level)
+                elif x < limit:
+                    self.fallen = True # If package has passed limit and is not on same level as player
+                    self.failures += 1 # Add one to failure counter
+            else: # For even conveyors
+                if x > limit and self.level == player_level:
+                    self.collision = True
+                elif x > limit:
+                    self.fallen = True
+                    self.failures += 1
 
 
     def package_falling(self, x, limit):
@@ -104,14 +90,19 @@ class Package:
     def reset_packages(self):
         """This method will be used to reset the package at conveyor0, should a package fall or reach the truck, by
         setting all attributes to their initial values"""
+        self.x_image = 51
+        self.y_image = 24
         self.collision = False
         self.fallen = False
+        if self.conveyor == 0:
+            self.continuity = True
+        else:
+            self.continuity = False
+        self.limit_reached = False
         self.visible = True
-        self.continuity = False
-        #self.reset = True
+        self.has_reset = True
 
-
-    def update(self, x, limit, player_level, reset, previous_collision: bool = True):
+    def update(self, x, limit, player_level, previous_collision: bool = True):
         # set a function that sets previous packages' continuity to current
         self.continuity_checker(previous_collision)
         if self.continuity or self.conveyor == 0: # Makes sure sprites only appear if they are on conveyor 0 or if they
@@ -121,10 +112,9 @@ class Package:
             self.package_falling(x, limit)
             self.collision_check(x, limit, player_level)
             self.package_end()
-            #self.reset_packages()
 
 
     def draw(self, x, y):
         # Display the package on the screen
         if self.continuity and self.visible:
-            pyxel.blt(x, y, 1, self.x_image, self.y_image, self.width, self.height, 0)
+            pyxel.blt(x, y, 1, self.x_image, self.y_image, 10, 8, 0)

@@ -20,9 +20,6 @@ class Conveyor:
             self.limit = 208
             self.x = 248
             self.direction = "left"
-
-        self.move_delay = 0  # counts frames
-        self.speed = 1  # move once every 3 frames
         self.reset = False # Remove after check
 
 
@@ -70,7 +67,14 @@ class Conveyor:
         if previous_collision:
                 self.move_one()
 
+    def reset_conveyors(self):
+        """This method will be used to reset the x-position of the conveyors when needed"""
+        if self.belt == "even":
+            self.x = 80
+        elif self.belt == "odd":
+            self.x = 168
+        else:
+            self.x = 248
 
-
-    def update(self, package_at_truck: bool, package_fallen: bool, previous_collision: bool = True):
+    def update(self, previous_collision: bool = True):
         self.move_several(previous_collision)

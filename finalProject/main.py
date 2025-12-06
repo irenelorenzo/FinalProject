@@ -28,49 +28,61 @@ pyxel.bltm(0, 0, 0, 0, 0, 256, 128)
 mario = Player("right")
 luigi = Player("left")
 truck = Truck()
-package = Package(0, 0, True)
+package0 = Package(0, 0, True)
 package1 = Package(1, 0)
 package2 = Package(2, 1)
 package3 = Package(1, 1)
 package4 = Package(2, 2)
 package5 = Package(1, 2)
 # Grouping all the packages into a list will make the update function simpler
-packages = [package, package1, package2, package3, package4, package5]
+packages = [package0, package1, package2, package3, package4, package5]
 
-conveyor = Conveyor("0", 98)
+conveyor0 = Conveyor("0", 98)
 conveyor1 = Conveyor("odd", 98)
 conveyor2 = Conveyor("even", 82)
 conveyor3 = Conveyor("odd", 66)
 conveyor4 = Conveyor("even", 50)
 conveyor5 = Conveyor("odd", 34)
 # Grouping all the packages into a list will make the update function simpler
-conveyors = [conveyor, conveyor1, conveyor2, conveyor3, conveyor4, conveyor5]
+conveyors = [conveyor0, conveyor1, conveyor2, conveyor3, conveyor4, conveyor5]
 
 
 def update():
     # Update the characters
+    package_reset_needed = False
     mario.update()
     luigi.update()
-    fallen = False
     # Update the packages and conveyors
     # First, update them for conveyor0, they do not depend on the previous conveyor necessarily
-    conveyor.update(truck.package_added, fallen)
-    package.update(conveyor.x, conveyor.limit, mario.level, conveyor.reset, False)
+    conveyor0.update()
+    package0.update(conveyor0.x, conveyor0.limit, mario.level, conveyor0.reset)
     for index in range(len(conveyors)):
-        conveyors[index].update(truck.package_added, packages[index - 1].fallen, packages[index - 1].collision)
-        if (index + 1) // 2 == 1:
+        conveyors[index].update(packages[index - 1].collision)
+        if index % 2 == 1:
             packages[index].update(conveyors[index].x, conveyors[index].limit, luigi.level,
-                                conveyors[index].reset, packages[index - 1].collision)
+                                packages[index - 1].collision)
         else:
             packages[index].update(conveyors[index].x, conveyors[index].limit, mario.level,
-                                conveyors[index].reset, packages[index - 1].collision)
-        if packages[index].fallen:
-            fallen = True
-        if packages[index].reset:
-            fallen = False
+                                packages[index - 1].collision)
+        if packages[index - 1].fallen:
+            package_reset_needed = True
 
     truck.update(package5.collision)
+
+    if truck.package_added:
+        package_reset_needed = True
+
+    if package_reset_needed:
+        for package in packages:
+            package.reset_packages()
+
+        for conveyor in conveyors:
+            conveyor.reset_conveyors()
+
+        truck.package_added = False
     # update score depending on if the conveyor belts are active
+    # Check if the reset function has been executed
+
 
 def draw():
     pyxel.cls(0) # Clear the screen
