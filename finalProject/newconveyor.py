@@ -88,6 +88,28 @@ class Conveyor:
             if self.pixels_left <= 0:
                 self.moving = False
 
-    def update(self, previous_collision: bool = True):
+    def reset_conveyor(self, package_at_truck, package_fallen):
+        """This method will be used to reset the package at conveyor0, should a package fall or reach the truck, by
+        setting all attributes to their initial values. Goes hand in hand with reset_packages method in package class"""
+        if package_fallen or package_at_truck:
+            if self.belt == "even":
+                self.limit = 176
+                self.x = 80
+                self.direction = "right"
+            elif self.belt == "odd":
+                self.limit = 72
+                self.x = 168
+                self.direction = "left"
+            else:
+                self.limit = 208
+                self.x = 248
+                self.direction = "left"
+
+            self.moving = False
+            self.pixels_left = 0
+            self.move_delay = 0
+
+    def update(self, package_at_truck: bool, package_fallen: bool, previous_collision: bool = True):
         self.move_several(previous_collision)
         self.update_movement(previous_collision)
+        self.reset_conveyor(package_at_truck, package_fallen)

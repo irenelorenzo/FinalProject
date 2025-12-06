@@ -19,6 +19,7 @@ class Package:
         self.limit_reached = False
         self.failures = 0
         self.visible = True
+        self.reset = False
 
 
     @property
@@ -105,7 +106,18 @@ class Package:
         if previous_collision:
             self.continuity = True
 
-    def update(self, x, limit, player_level, previous_collision: bool):
+    def reset_packages(self, package_at_truck, package_fallen):
+        """This method will be used to reset the package at conveyor0, should a package fall or reach the truck, by
+        setting all attributes to their initial values"""
+        if package_fallen or package_at_truck:
+            self.reset = True
+            self.collision = False
+            self.fallen = False
+            self.visible = True
+            self.continuity = False
+
+
+    def update(self, x, limit, player_level, package_at_truck: bool, package_fallen: bool, previous_collision: bool = True):
         # set a function that sets previous packages' continuity to current
         self.continuity_checker(previous_collision)
         if self.continuity or self.conveyor == 0:
@@ -114,6 +126,7 @@ class Package:
             self.package_falling(x, limit)
             self.collision_check(x, limit, player_level)
             self.package_end()
+            self.reset_packages(package_at_truck, package_fallen)
 
 
     def draw(self, x, y):

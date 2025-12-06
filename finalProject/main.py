@@ -29,6 +29,7 @@ package2 = Package(2, 1)
 package3 = Package(1, 1)
 package4 = Package(2, 2)
 package5 = Package(1, 2)
+packages = [package, package1, package2, package3, package4, package5]
 # Put conveyors in odd and even list to simplify everything
 conveyor = Conveyor("0", 98)
 conveyor1 = Conveyor("odd", 98)
@@ -36,27 +37,24 @@ conveyor2 = Conveyor("even", 82)
 conveyor3 = Conveyor("odd", 66)
 conveyor4 = Conveyor("even", 50)
 conveyor5 = Conveyor("odd", 34)
-conveyors = [conveyor1, conveyor2]
+conveyors = [conveyor, conveyor1, conveyor2, conveyor3, conveyor4, conveyor5]
+
 
 def update():
     # Use this function to alter mario and luigi's position (add conditions for when 8 packages at truck, etc.)
     mario.update()
     luigi.update()
-    conveyor.update()
+    conveyor.update(truck.package_added, False)
+    package.update(conveyor.x, conveyor.limit, mario.level, truck.package_added, False)
+    for index in range(len(conveyors)):
+        conveyors[index].update(truck.package_added, packages[index - 1].fallen, packages[index - 1].collision)
+        if (index + 1) // 2 == 1:
+            packages[index].update(conveyors[index].x, conveyors[index].limit, luigi.level,
+                                   truck.package_added, packages[index - 1].fallen, packages[index - 1].collision)
+        else:
+            packages[index].update(conveyors[index].x, conveyors[index].limit, mario.level,
+                                   truck.package_added, packages[index - 1].fallen, packages[index - 1].collision)
 
-    package.update(conveyor.x, conveyor.limit, mario.level, True)
-    # Use for loops to update conveyors to simplify everything
-
-    conveyor1.update(package.collision)
-    package1.update(conveyor1.x, conveyor1.limit, luigi.level, package.collision)
-    conveyor2.update(package1.collision)
-    package2.update(conveyor2.x, conveyor2.limit, mario.level, package1.collision)
-    conveyor3.update(package2.collision)
-    package3.update(conveyor3.x, conveyor3.limit, luigi.level, package2.collision)
-    conveyor4.update(package3.collision)
-    package4.update(conveyor4.x, conveyor4.limit, mario.level, package3.collision)
-    conveyor5.update(package4.collision)
-    package5.update(conveyor5.x, conveyor5.limit, luigi.level, package4.collision)
     truck.update(package5.collision)
     # update score depending on if the conveyor belts are active
 
