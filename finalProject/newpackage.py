@@ -19,6 +19,8 @@ class Package:
         self.failures = 0 # Counts if package has fallen to determine lives left
         self.visible = True # Used in the draw() function. Will be set to False when hiding the package
         self.has_reset = False
+        self.add_score = False # this will become true when package moves to next conveyor. It will be used to update the
+                               # the score
 
     @property
     def conveyor(self) -> int:
@@ -57,12 +59,14 @@ class Package:
             if self.conveyor == 0 or self.conveyor == 1: # For conveyor0 and odd conveyors
                 if x < limit and self.level == player_level: # Checks if package has passed limit and is on same level as player
                     self.collision = True # Determines package and player have collided (passes package onto next level)
+                    self.add_score = True
                 elif x < limit:
                     self.fallen = True # If package has passed limit and is not on same level as player
                     self.failures += 1 # Add one to failure counter
             else: # For even conveyors
                 if x > limit and self.level == player_level:
                     self.collision = True
+                    self.add_score = True
                 elif x > limit:
                     self.fallen = True
                     self.failures += 1

@@ -56,6 +56,7 @@ def update():
     package_reset_needed = False
     mario.update()
     luigi.update()
+    truck.update(package5.collision)
     # Update the packages and conveyors
     # First, update them for conveyor0, they do not depend on the previous conveyor necessarily
     conveyor0.update(truck.delivering)
@@ -70,8 +71,9 @@ def update():
                                 packages[index - 1].collision)
         if packages[index - 1].fallen:
             package_reset_needed = True
+        score.update(packages[index].add_score, truck.add_score)
+        packages[index].add_score = False
 
-    truck.update(package5.collision)
 
     if truck.package_added:
         package_reset_needed = True
@@ -82,11 +84,9 @@ def update():
 
         for conveyor in conveyors:
             conveyor.reset_conveyors()
-
         truck.package_added = False
     # update score depending on if the conveyor belts are active
     # Check if the reset function has been executed
-
 
 def draw():
     pyxel.cls(0) # Clear the screen
@@ -98,6 +98,5 @@ def draw():
     for index in range(len(packages)):
         packages[index].draw(conveyors[index].x, conveyors[index].y)
     score.draw()
-
 
 pyxel.run(update, draw) #run the program
