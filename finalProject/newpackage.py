@@ -2,6 +2,8 @@ import pyxel
 # Reminders:
 # If we have time, make it so that the packages disappear gradually at the middle, and make them spend more time falling
 # Change sprites according to conveyor level
+# Make it so that if truck is out for delivery and package is at limit, package is reset
+# Increase minimum number of packages every 10 points
 class Package:
     def __init__(self, conveyor: int, level: int, continuity: bool = False):
         self.conveyor = conveyor # 0 for conveyor0, 1 for odd conveyors, 2 for even conveyors

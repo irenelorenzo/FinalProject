@@ -9,11 +9,15 @@ class Truck:
     def __init__(self):
         """This is the __init__ function for the truck"""
         self.package_count = 0
-        self.image = 0
+        self.x_image = 0
+        self.y_image = 0
         self.x = 0
         self.y = 56
         self.delivering = False
         self.package_added = False
+        self.delivery_counter = 0 # this will be updated to time the package being away delivery
+        self.add_score = False # This variable will be set to true every time the truck goes out for delivery
+                               # and will be used to add 10 to the total score
 
     @property
     def y(self):
@@ -31,26 +35,47 @@ class Truck:
         """This is a method for when a new package reaches the truck"""
         if last_conveyor_collision:
             self.package_count += 1
-            self.image += 32
+            self.y_image += 32
             self.package_added = True
 
-    def delivery(self):
+    def delivery_start(self):
+        """This is a method to establish when the truck goes out for delivery"""
         if self.package_count == 8:
             self.delivering = True
-            for _ in range(48): # When the truck has eight packages, move truck out of screen 1 pixel at a time
-                self.x -= 1
-            self.package_count = 0
-            self.image = 0
-            for _ in range(48): # Bring truck back into screen
-                self.x += 1
+            self.add_score = True
+            self.x_image = 48
+            self.y_image = 96
 
-    # Def __eq__ method to check if package is at truck (compare package at truck with True)
+    def deliver(self):
+        """This is the method that graphically represents the truck delivering the packages"""
+        if self.delivering and self.delivery_counter < 48:
+            self.add_score = False
+            self.x -= 1
+            self.delivery_counter += 1
+
+
+    def delivery_end(self):
+        """This is a method for when the truck comes back from delivery"""
+        if self.delivering and 48 <= self.delivery_counter < 96:
+            self.x += 1
+            self.delivery_counter += 1
+            self.y_image = 128
+        elif self.delivery_counter == 96:
+            self.delivering = False
+            self.package_count = 0
+            self.x_image = 0
+            self.y_image = 0
+
 
 
     def update(self, last_conveyor_collision):
+        """This method will update the state of the truck"""
         self.added_package(last_conveyor_collision)
+        self.delivery_start()
+        self.deliver()
+        self.delivery_end()
 
     def draw(self):
         """This method will display the truck on the screen"""
-        pyxel.blt(self.x, self.y, 1, 0, self.image, 50, 34, 0)
+        pyxel.blt(self.x, self.y, 1, self.x_image, self.y_image, 50, 34, 0)
 

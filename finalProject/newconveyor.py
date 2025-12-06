@@ -1,6 +1,7 @@
 # Reminders:
 # Slow speed down a little
-# For some reason the package on conveyor3 does not appear unless luigi is on the same level?
+# Change right limit
+
 class Conveyor:
     """This class is used to represent the conveyor belts"""
     def __init__(self, belt: str, y: int = 98):
@@ -63,8 +64,8 @@ class Conveyor:
         elif self.direction == "right":
             self.x += 1
 
-    def move_several(self, previous_collision):
-        if previous_collision:
+    def move_several(self, truck_delivering, previous_collision):
+        if previous_collision and not truck_delivering:
                 self.move_one()
 
     def reset_conveyors(self):
@@ -76,5 +77,5 @@ class Conveyor:
         else:
             self.x = 248
 
-    def update(self, previous_collision: bool = True):
-        self.move_several(previous_collision)
+    def update(self, truck_delivering, previous_collision: bool = True):
+        self.move_several(truck_delivering, previous_collision)

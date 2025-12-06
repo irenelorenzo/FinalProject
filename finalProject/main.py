@@ -17,6 +17,7 @@ from finalProject.player import Player
 from finalProject.truck import Truck
 from finalProject.newpackage import Package
 from finalProject.newconveyor import Conveyor
+from score import Score
 
 # Set the scene with the tilemap
 pyxel.init(256, 128)
@@ -28,6 +29,7 @@ pyxel.bltm(0, 0, 0, 0, 0, 256, 128)
 mario = Player("right")
 luigi = Player("left")
 truck = Truck()
+
 package0 = Package(0, 0, True)
 package1 = Package(1, 0)
 package2 = Package(2, 1)
@@ -46,6 +48,8 @@ conveyor5 = Conveyor("odd", 34)
 # Grouping all the packages into a list will make the update function simpler
 conveyors = [conveyor0, conveyor1, conveyor2, conveyor3, conveyor4, conveyor5]
 
+score = Score()
+
 
 def update():
     # Update the characters
@@ -54,10 +58,10 @@ def update():
     luigi.update()
     # Update the packages and conveyors
     # First, update them for conveyor0, they do not depend on the previous conveyor necessarily
-    conveyor0.update()
+    conveyor0.update(truck.delivering)
     package0.update(conveyor0.x, conveyor0.limit, mario.level, conveyor0.reset)
     for index in range(len(conveyors)):
-        conveyors[index].update(packages[index - 1].collision)
+        conveyors[index].update(truck.delivering, packages[index - 1].collision)
         if index % 2 == 1:
             packages[index].update(conveyors[index].x, conveyors[index].limit, luigi.level,
                                 packages[index - 1].collision)
@@ -93,6 +97,7 @@ def draw():
     # Draw all the packages
     for index in range(len(packages)):
         packages[index].draw(conveyors[index].x, conveyors[index].y)
+    score.draw()
 
 
 pyxel.run(update, draw) #run the program
