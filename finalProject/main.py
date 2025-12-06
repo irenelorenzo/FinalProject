@@ -3,7 +3,7 @@
 # if there's too many if statements)
 # Make sure all methods have docstrings
 # Make sure code is properly commented
-# Put conveyors into lists and simplify main code
+# simplify main code
 # Change newconveyor to conveyor, same with newpackage
 
 # Maybe add an if in the for loop related to the conveyors/packages? Like unless a condition is met (like reset = False
