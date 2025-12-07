@@ -10,7 +10,7 @@ class Conveyor:
         # The type of the conveyor belt will define its 'limit', the x-coordinate where the package has to be picked up
         # by either one of the characters
         if self.belt == "even":
-            self.limit = 176
+            self.limit = 172
             self.x = 80
             self.direction = "right"
         elif self.belt == "odd":
@@ -18,7 +18,7 @@ class Conveyor:
             self.x = 168
             self.direction = "left"
         else:
-            self.limit = 208
+            self.limit = 200
             self.x = 248
             self.direction = "left"
         self.reset = False # Remove after check

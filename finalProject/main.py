@@ -74,8 +74,6 @@ def update():
             package_reset_needed = True
         score.update_conveyor_score(packages[index].add_score)
         packages[index].add_score = False
-        mario.check_collision(conveyors[index].x, conveyors[index].limit, packages[index].conveyor, packages[index].level)
-        luigi.check_collision(conveyors[index].x, conveyors[index].limit, packages[index].conveyor, packages[index].level)
 
     truck.update(package5.collision)
     score.update_truck_score(truck.add_score)

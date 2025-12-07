@@ -88,26 +88,8 @@ class Player:
                 self.level -= 1
 
 
-    def check_collision(self, x, limit, conveyor, package_level):
-        """This method will be used to check if the character has collided with a packages. It goes hand in hand with
-        package.collision_check"""
-        if conveyor in (0, 1) and x < limit and self.level == package_level:  # For conveyor0 and odd conveyors
-            self.collision = True  # Determines package and player have collided (passes package onto next level)
-        elif conveyor == 2 and x > limit and self.level == package_level:
-            self.collision = True
-
-    def moving_package(self):
-        """This method will change the sprite of the characters when they collide with the packages"""
-        if self.collision:
-            self.y_image = self.y_images["grab1"]
-            self.collision_counter += 1
-            if self.collision_counter == 3:
-                self.y_image = self.y_images["normal"]
-                self.collision =  False
-
     def update(self):
         self.move()
-        self.moving_package()
 
     def draw(self):
         # Display the character on the screen
