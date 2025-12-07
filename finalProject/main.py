@@ -56,7 +56,6 @@ def update():
     package_reset_needed = False
     mario.update()
     luigi.update()
-    truck.update(package5.collision)
     # Update the packages and conveyors
     # First, update them for conveyor0, they do not depend on the previous conveyor necessarily
     conveyor0.update(truck.delivering)
@@ -71,8 +70,11 @@ def update():
                                 packages[index - 1].collision)
         if packages[index - 1].fallen:
             package_reset_needed = True
-        score.update(packages[index].add_score, truck.add_score)
+        score.update_conveyor_score(packages[index].add_score)
         packages[index].add_score = False
+
+    truck.update(package5.collision)
+    score.update_truck_score(truck.add_score)
 
 
     if truck.package_added:

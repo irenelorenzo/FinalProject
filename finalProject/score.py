@@ -33,19 +33,23 @@ class Score:
             string_score = str(self.total_score)
             for index in range(len(string_score)):
                 number = int(string_score[index])
-                for count in range(9):
-                    if number == count and number != 0:
-                        self.y_images[index] += 16
+                for count in range(10):
+                    if number == count and self.total_score < 10:
+                        self.y_images[index + 1] = 16 * number + 3 # If the score < 10, only the second digit will be modified
+                    elif number == count:
+                        self.y_images[index] = 16 * number + 3 # Both digits are modified
             self.modify_score = False
 
 
-    def update(self, next_conveyor, truck_delivering):
+    def update_conveyor_score(self, next_conveyor):
         """This method will be used to update the score"""
         self.conveyor_score_update(next_conveyor)
-        self.truck_score_update(truck_delivering)
         self.graphical_representation()
+
+    def update_truck_score(self, truck_delivering):
+        self.truck_score_update(truck_delivering)
 
     def draw(self):
         """This method will be used to draw the score, with the info obtained in the graphical_representation method"""
-        pyxel.blt(240,3, 2, self.x_images[0], self.y_images[0], 8, 11, 0)
-        pyxel.blt(248, 3, 2, self.x_images[1], self.y_images[1], 8, 11, 0)
+        pyxel.blt(240,3, 2, self.x_images[0], self.y_images[0], 8, 11, 0) # First digit
+        pyxel.blt(248, 3, 2, self.x_images[1], self.y_images[1], 8, 11, 0) # Second digit
