@@ -1,16 +1,14 @@
 import pyxel
 # Reminders:
 # If we have time, make it so that the packages disappear gradually at the middle, and make them spend more time falling
-# Change sprites according to conveyor level
-# Make it so that if truck is out for delivery and package is at limit, package is reset
-# Increase minimum number of packages every 10 points
+# Increase minimum number of packages every 50 points
 class Package:
-    def __init__(self, conveyor: int, level: int, continuity: bool = False):
+    def __init__(self, conveyor: int, level: int, y_image, continuity: bool = False):
         self.conveyor = conveyor # 0 for conveyor0, 1 for odd conveyors, 2 for even conveyors
         self.level = level # Either 0, 1 or 2 - will be used to determine collisions with characters
 
         self.x_image = 51  # Add x coordinates of package sprites
-        self.y_image = 24  # Add y coordinates of package sprites (later on, add a 16 to this attribute when middle of belt is reached)
+        self.y_image = y_image  # Add y coordinates of package sprites (later on, add a 16 to this attribute when middle of belt is reached)
         self.collision = False # Will become true once package collides with characters
         self.fallen = False # Will become false if package falls
         self.continuity = continuity # This attribute describes if the package has not been killed prior to getting to
@@ -37,8 +35,9 @@ class Package:
     def switch_image(self, x):
         """Switches sprite to the next when middle of screen is reached, where x is substituted in main code. Also gets
         package to disappear when it reaches the middle section"""
-        if x == 128:
+        if x == 128 and self.y_image != 88:
             self.y_image += 16 # Changes y-coordinate of image bank
+
 
     def hide_package(self, x):
         """This method will hide the package sprite as it goes through the center columns"""
@@ -48,6 +47,7 @@ class Package:
         else:
                 self.visible = True
 
+    # Pretty sure we don't actually need this
     def __eq__(self, player_level):
         """This method will be used to compare the levels that the character is in and the level the package is in,
         checking potential collisions between them"""
@@ -93,11 +93,11 @@ class Package:
         if previous_collision:
             self.continuity = True
 
-    def reset_packages(self):
+    def reset_packages(self, init_y):
         """This method will be used to reset the package at conveyor0, should a package fall or reach the truck, by
         setting all attributes to their initial values"""
         self.x_image = 51
-        self.y_image = 24
+        self.y_image = init_y
         self.collision = False
         self.fallen = False
         if self.conveyor == 0:

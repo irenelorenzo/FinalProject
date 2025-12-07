@@ -30,16 +30,18 @@ mario = Player("right")
 luigi = Player("left")
 truck = Truck()
 
-package0 = Package(0, 0, True)
-package1 = Package(1, 0)
-package2 = Package(2, 1)
-package3 = Package(1, 1)
-package4 = Package(2, 2)
-package5 = Package(1, 2)
+init_y_list = [24, 24, 40, 56, 72, 88]
+
+package0 = Package(0, 0, 24, True)
+package1 = Package(1, 0, 24)
+package2 = Package(2, 1, 40)
+package3 = Package(1, 1, 56)
+package4 = Package(2, 2, 72)
+package5 = Package(1, 2, 88)
 # Grouping all the packages into a list will make the update function simpler
 packages = [package0, package1, package2, package3, package4, package5]
 
-conveyor0 = Conveyor("0", 98)
+conveyor0 = Conveyor("0", 106)
 conveyor1 = Conveyor("odd", 98)
 conveyor2 = Conveyor("even", 82)
 conveyor3 = Conveyor("odd", 66)
@@ -72,6 +74,8 @@ def update():
             package_reset_needed = True
         score.update_conveyor_score(packages[index].add_score)
         packages[index].add_score = False
+        mario.check_collision(conveyors[index].x, conveyors[index].limit, packages[index].conveyor, packages[index].level)
+        luigi.check_collision(conveyors[index].x, conveyors[index].limit, packages[index].conveyor, packages[index].level)
 
     truck.update(package5.collision)
     score.update_truck_score(truck.add_score)
@@ -81,8 +85,8 @@ def update():
         package_reset_needed = True
 
     if package_reset_needed:
-        for package in packages:
-            package.reset_packages()
+        for index in range(len(packages)):
+            packages[index].reset_packages(init_y_list[index])
 
         for conveyor in conveyors:
             conveyor.reset_conveyors()

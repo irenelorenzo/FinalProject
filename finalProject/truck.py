@@ -45,11 +45,13 @@ class Truck:
             self.add_score = True
             self.x_image = 48
             self.y_image = 96
+            self.package_count = 0 # Reset the package count so that another delivery can occur
 
     def deliver(self):
         """This is the method that graphically represents the truck delivering the packages"""
         if self.delivering and self.delivery_counter < 48:
-            self.add_score = False
+            if self.delivery_counter == 1:
+                self.add_score = False
             self.x -= 1
             self.delivery_counter += 1
 
