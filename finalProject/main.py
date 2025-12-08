@@ -1,17 +1,9 @@
-# Make sure all classes have only the necessary setters (not for read-only attributes)
-# Make sure anything within a method that can be replaced by a protected method is replaced by a protected method (e.g.
-# if there's too many if statements)
-# Make sure all methods have docstrings
-# Make sure code is properly commented
-# simplify main code
-# Change newconveyor to conveyor, same with newpackage
-
 # Import all the classes, and pyxel
 import pyxel
 from finalProject.player import Player
 from finalProject.truck import Truck
-from finalProject.newpackage import Package
-from finalProject.newconveyor import Conveyor
+from finalProject.package import Package
+from finalProject.conveyor import Conveyor
 from score import Score
 
 # Set the scene with the tilemap
@@ -25,14 +17,17 @@ mario = Player("right")
 luigi = Player("left")
 truck = Truck()
 
-init_y_list = [24, 24, 40, 56, 72, 88]
+init_y_list = [24, 24, 40, 56, 72, 88] # This is a list storing the initial y-coordinates of images of the packages
+                                       # Will be used both to initialise the variables and reset them after a package
+                                       # falls/reaches truck
 
-package0 = Package(0, 0, 24, True)
-package1 = Package(1, 0, 24)
-package2 = Package(2, 1, 40)
-package3 = Package(1, 1, 56)
-package4 = Package(2, 2, 72)
-package5 = Package(1, 2, 88)
+package0 = Package(0, 0, init_y_list[0], True)
+package1 = Package(1, 0, init_y_list[1])
+package2 = Package(2, 1, init_y_list[2])
+package3 = Package(1, 1, init_y_list[3])
+package4 = Package(2, 2, init_y_list[4])
+package5 = Package(1, 2, init_y_list[5])
+
 # Grouping all the packages into a list will make the update function simpler
 packages = [package0, package1, package2, package3, package4, package5]
 
@@ -42,6 +37,7 @@ conveyor2 = Conveyor("even", 82)
 conveyor3 = Conveyor("odd", 66)
 conveyor4 = Conveyor("even", 50)
 conveyor5 = Conveyor("odd", 34)
+
 # Grouping all the conveyors into a list will make the update function simpler
 conveyors = [conveyor0, conveyor1, conveyor2, conveyor3, conveyor4, conveyor5]
 
@@ -61,8 +57,9 @@ def update():
     if GAME_OVER:
         return
 
+    package_reset_needed = False # This will determine if the package cycle has to start over again (at conveyor0)
+
     # Update the characters
-    package_reset_needed = False
     mario.update()
     luigi.update()
 
@@ -74,7 +71,7 @@ def update():
     for index in range(len(conveyors)):
         conveyors[index].update(truck.delivering, packages[index - 1].collision)
 
-        # Luigi handles odd indices, Mario even (based on your original logic)
+        # Luigi handles odd indices, Mario handles even ones
         if index % 2 == 1:
             packages[index].update(
                 conveyors[index].x,
@@ -111,6 +108,7 @@ def update():
     truck.update(package5.collision)
     score.update_truck_score(truck.add_score)
 
+    # If a package reaches the truck, trigger package reset
     if truck.package_added:
         package_reset_needed = True
 
@@ -122,7 +120,7 @@ def update():
         for conveyor in conveyors:
             conveyor.reset_conveyors()
 
-        truck.package_added = False
+        truck.package_added = False # If this is not set to False, the reset for packages will continue to be triggered
 
     # Boss visibility countdown
     if boss_visible:

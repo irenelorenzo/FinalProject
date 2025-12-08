@@ -1,6 +1,4 @@
 import pyxel
-# Reminders:
-# Make it so that the sprites change whenever the package is being moved from one place to another
 
 class Player:
     """This is a class to represent the characters. In the final game, there will be two characters, Mario and Luigi
@@ -16,53 +14,40 @@ class Player:
         self.side = side
         self.level = 0
         if side == "right":
-            self.x = 184    #The x coordinate of character on right side
-            self.min_y = 108   #Lowest y coordinate of character on right side
+            self.x = 184    # The x coordinate of character on right side
+            self.min_y = 108   # Lowest y coordinate of character on right side
             self.max_y = 56     # Highest y coordinate of character on right side
-            self.x_image = 16
+            self.x_image = 16   # The x-coordinate of the sprite in the image bank
 
         else:
             self.x = 60  # The x coordinate of character on right side
             self.min_y = 92  # Lowest y coordinate of character on right side
             self.max_y = 40  # Highest y coordinate of character on right side
-            self.x_image = 0
+            self.x_image = 0    # The x-coordinate of the sprite in the image bank
 
-        # Create dictionary to store coordinates of image
+        # Create dictionary to store coordinates of the different images
         self.y_images = {"normal": 0, "grab1": 16, "grab2": 32, "lift": 48, "boss": 64, "rest1": 80, "rest2": 96}
         self.y_image = self.y_images["normal"]
 
         self.y = self.min_y     # Initialises the position of the character on its ground floor
 
-        self.collision = False
-        self.collision_counter = 0
+
 
     # Now that the __init__ method of the class has been defined, and the attributes have been initialised, we must set
-    # properties and setters for each of them to ensure their values are correct. We will first define all the
-    # properties, and afterward all the setters.
-    @property
-    def y(self):
-      return self.__y
+    # properties and setters for each of them to ensure their values are correct. Since 'side' is the only parameter
+    # that can be modified in the main program, se will only create a property and a setter for this parameter
 
     @property
-    def side(self):
+    def side(self) -> str:
         return self.__side
 
 
-    # Now that all the properties of the attributes have been defined, it is time to create their setters.
-    @y.setter
-    def y(self,y):
-        if not isinstance(y, int):
-            raise TypeError("The y-coordinate must be an integer")
-        # no condition established for the bounds of the value of y, since they are established in the init function
-        else:
-            self.__y = y
-
     @side.setter
-    def side(self,side):
+    def side(self,side: str):
         if not isinstance(side, str):
-            raise TypeError("The side the character is on must be a string")
+            raise TypeError("The side the character is on must be a string") # Makes sure data type is correct
         elif side != "left" and side != "right":
-            raise ValueError("The side must be either 'right' or 'left'")
+            raise ValueError("The side must be either 'right' or 'left'") # Makes sure value is correct
         else:
             self.__side = side
 
@@ -74,8 +59,8 @@ class Player:
          screen they are on"""
         if self.side == "left":
             if pyxel.btnp(pyxel.KEY_W) and self.y > self.max_y:
-                self.y -= 32
-                self.level += 1
+                self.y -= 32    # The floors are 32 pixels apart
+                self.level += 1 # The level they are on will be used to check the collisions with packages in package
             elif pyxel.btnp(pyxel.KEY_S) and self.y < self.min_y:
                 self.y += 32
                 self.level -= 1
@@ -89,10 +74,13 @@ class Player:
 
 
     def update(self):
+        """This method is used to update the state the characters are in. In this case, it only invokes the move method
+        to update the characters' position"""
         self.move()
 
     def draw(self):
-        # Display the character on the screen
+        """This method is used to draw the characters on the tilemap, with different orientation if they are on the right
+        side and on the ground floor, since there packages emerge from the right instead of the left"""
         if self.side == "right" and self.y == self.min_y:
             pyxel.blt(self.x, self.y, 0, self.x_image - 1, self.y_image, -16, 16, 0)
         else:
